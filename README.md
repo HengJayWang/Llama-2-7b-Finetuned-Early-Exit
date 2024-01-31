@@ -18,6 +18,7 @@ This repo extracted [modeling_llama.py](https://github.com/huggingface/transform
 To reproduce the experiment:
 
 ### 1. Fine-tuning with [mlabonne/guanaco-llama2](https://huggingface.co/datasets/mlabonne/guanaco-llama2) dataset ✅
+> 💡 follow this [**blog post**](https://mlabonne.github.io/blog/posts/Fine_Tune_Your_Own_Llama_2_Model_in_a_Colab_Notebook.html)
 1. Install the library in the `Fine_tune_Llama_2_with_Early_Exit_Finetuning.ipynb` first cell at first time.
 2. Replace the `modeling_llama.py` in your python library by a soft link.
    - something like e.g. `ln -s /usr/local/lib/python3.10/dist-packages/transformers/models/llama/modeling_llama.py {project_folder}/modeling_llama.py`
