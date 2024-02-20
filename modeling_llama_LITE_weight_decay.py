@@ -735,7 +735,7 @@ class LlamaForCausalLM(LlamaPreTrainedModel):
         self.pretraining_tp = config.pretraining_tp
         self.vocab_size = config.vocab_size
         self.lm_head = nn.Linear(config.hidden_size, config.vocab_size, bias=False)
-        print("-LlamaForCausalLM: Ready for Early Exit Training with custom loss!~")
+        print("-LlamaForCausalLM: Ready for Early Exit Training with custom loss!~ (LITE with weight decay)")
 
         # Initialize weights and apply final processing
         self.post_init()
@@ -841,7 +841,7 @@ class LlamaForCausalLM(LlamaPreTrainedModel):
             shift_labels = shift_labels.view(-1)
             # Enable model parallelism
             shift_labels = shift_labels.to(shift_logits.device)
-            loss = loss_fct(shift_logits, shift_labels) / 7
+            loss = loss_fct(shift_logits, shift_labels) * 0.4
             
             # mid layer loss of layers 8
             mid_hidden_states = all_hidden_states[-25]
@@ -850,7 +850,7 @@ class LlamaForCausalLM(LlamaPreTrainedModel):
             mid_shift_logits = mid_logits[..., :-1, :].contiguous()
             mid_shift_logits = mid_shift_logits.view(-1, self.config.vocab_size)
             mid_shift_logits = mid_shift_logits.to(shift_logits.device)
-            mid_loss = loss_fct(mid_shift_logits, shift_labels) / 7
+            mid_loss = loss_fct(mid_shift_logits, shift_labels) * 0.05
             loss += mid_loss
             
             # mid layer loss of layers 12
@@ -860,7 +860,7 @@ class LlamaForCausalLM(LlamaPreTrainedModel):
             mid_shift_logits = mid_logits[..., :-1, :].contiguous()
             mid_shift_logits = mid_shift_logits.view(-1, self.config.vocab_size)
             mid_shift_logits = mid_shift_logits.to(shift_logits.device)
-            mid_loss = loss_fct(mid_shift_logits, shift_labels) / 7
+            mid_loss = loss_fct(mid_shift_logits, shift_labels) * 0.05
             loss += mid_loss
             
             # mid layer loss of layers 16
@@ -870,7 +870,7 @@ class LlamaForCausalLM(LlamaPreTrainedModel):
             mid_shift_logits = mid_logits[..., :-1, :].contiguous()
             mid_shift_logits = mid_shift_logits.view(-1, self.config.vocab_size)
             mid_shift_logits = mid_shift_logits.to(shift_logits.device)
-            mid_loss = loss_fct(mid_shift_logits, shift_labels) / 7
+            mid_loss = loss_fct(mid_shift_logits, shift_labels) * 0.1
             loss += mid_loss
             
             # mid layer loss of layers 20
@@ -880,7 +880,7 @@ class LlamaForCausalLM(LlamaPreTrainedModel):
             mid_shift_logits = mid_logits[..., :-1, :].contiguous()
             mid_shift_logits = mid_shift_logits.view(-1, self.config.vocab_size)
             mid_shift_logits = mid_shift_logits.to(shift_logits.device)
-            mid_loss = loss_fct(mid_shift_logits, shift_labels) / 7
+            mid_loss = loss_fct(mid_shift_logits, shift_labels) * 0.1
             loss += mid_loss
             
             # mid layer loss of layers 24
@@ -890,7 +890,7 @@ class LlamaForCausalLM(LlamaPreTrainedModel):
             mid_shift_logits = mid_logits[..., :-1, :].contiguous()
             mid_shift_logits = mid_shift_logits.view(-1, self.config.vocab_size)
             mid_shift_logits = mid_shift_logits.to(shift_logits.device)
-            mid_loss = loss_fct(mid_shift_logits, shift_labels) / 7
+            mid_loss = loss_fct(mid_shift_logits, shift_labels) * 0.15
             loss += mid_loss
 
             # mid layer loss of layers 28
@@ -900,7 +900,7 @@ class LlamaForCausalLM(LlamaPreTrainedModel):
             mid_shift_logits = mid_logits[..., :-1, :].contiguous()
             mid_shift_logits = mid_shift_logits.view(-1, self.config.vocab_size)
             mid_shift_logits = mid_shift_logits.to(shift_logits.device)
-            mid_loss = loss_fct(mid_shift_logits, shift_labels) / 7
+            mid_loss = loss_fct(mid_shift_logits, shift_labels) * 0.25
             loss += mid_loss
             
 
